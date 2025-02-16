@@ -12,17 +12,20 @@ class FogLogger:
             '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
         )
         
-        # Console handler
         console = logging.StreamHandler(sys.stdout)
         console.setFormatter(formatter)
         self.logger.addHandler(console)
         
-        # File handler
         if log_file:
             file = logging.FileHandler(log_file)
             file.setFormatter(formatter)
             self.logger.addHandler(file)
-            
-    def log(self, level: str, message: str, **kwargs):
-        """Generic log method with structured context support."""
-        getattr(self.logger, level.lower())(message, extra=kwargs)
+    
+    def info(self, message: str, **kwargs):
+        self.logger.info(message, extra=kwargs)
+    
+    def warning(self, message: str, **kwargs):
+        self.logger.warning(message, extra=kwargs)
+    
+    def error(self, message: str, **kwargs):
+        self.logger.error(message, extra=kwargs)

@@ -1,5 +1,8 @@
 from fogverse.producer.kafka import KafkaProducer
 from fogverse.utils.logging import FogLogger
+from fogverse.admin import create_topics
+
+import asyncio
 
 class MyProducer(KafkaProducer):
     def __init__(self):
@@ -14,6 +17,15 @@ class MyProducer(KafkaProducer):
         self.logger.info(f"Sent: {data}")
 
 async def main():
+    # Create topic.
+    kafka_config = {
+        "bootstrap_servers": "localhost:9092",
+        "topics": [
+            {"name": "my-topic", "partitions": 1}
+        ]
+    }
+    await create_topics(kafka_config)
+    
     producer = MyProducer()
     await producer.start()
     for i in range(10):
